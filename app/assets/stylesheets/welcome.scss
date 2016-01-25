@@ -2,6 +2,25 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.social-btn{
+  position: relative;
+  left: 35%;
+  //width: 100px;
+  //height: 30px;
+  //realized I don't need that with button instead of div
+  background: #33cc33;
+  margin: 10px;
+  border:  1px solid black;
+  border-radius: 10px; // unclear how they got the button to look
+  //round in the solution without using this. 
+  margin: 5px;
+  text-align: center;
+  a {
+    color: white;
+  }
+
+}
+
 /*h1 {
   color: red;
 }
