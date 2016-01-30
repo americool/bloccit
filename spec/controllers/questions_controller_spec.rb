@@ -113,11 +113,16 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-#  describe "GET #destroy" do
-#    it "returns http success" do
-#      get :destroy
-#      expect(response).to have_http_status(:success)
-#    end
-#  end
+  describe "DELETE #destroy" do
+    it "deletes the question" do
+      get :destroy, {id: my_question.id}
+      count = Question.where({id: my_question.id}).size
+      expect(count).to eq 0
+    end
 
+    it "redirects to question index" do
+      delete :destroy, {id: my_question.id}
+      expect(response).to redirect_to questions_path
+    end
+  end
 end
