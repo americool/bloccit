@@ -16,6 +16,16 @@ RSpec.describe User, type: :model do
   it {is_expected.to have_secure_password}
   it {is_expected.to validate_length_of(:password).is_at_least(6)}
 
+  describe "user name stuff" do
+    #let(:testuser) {User.new(name:"someguy whosadude")}
+
+    it "should have each name be capitalized" do
+      user.name = "someguy whosadude" # doing this and not the commented out part above is what we should talk about 
+      user.save
+      expect(user.name).to eq("Someguy Whosadude")
+    end
+  end
+
   describe "attributes" do
     it "should respond to name" do
       expect(user).to respond_to(:name)
