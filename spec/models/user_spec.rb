@@ -27,7 +27,7 @@ RSpec.describe User, type: :model do
     end
 
     it "responds to role" do
-      expect(user).to respond(:role)
+      expect(user).to respond_to(:role)
     end
 
     it "responds to admin?" do
@@ -68,7 +68,7 @@ RSpec.describe User, type: :model do
       end
     end
   end
-  
+
 
   describe "invalid user" do
     let(:user_with_invalid_name) {User.new(name: "", email: "user@bloccit.com")}
