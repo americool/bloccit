@@ -1,7 +1,8 @@
 class PostsController < ApplicationController
 
   before_action :require_sign_in, except: :show
-  before_action :authorize_user, except: [:show, :new, :create]
+  before_action :authorize_user, except: [:show, :new, :create, :edit, :update]
+  before_action :check_mod, only: [:edit, :update]
 
   def show
     @post = Post.find(params[:id])
@@ -67,6 +68,15 @@ class PostsController < ApplicationController
 
         unless current_user == post.user || current_user.admin?
           flash[:alert] = "This is not your post. You must be the post owner or an admin to do that" #should say something different imho
+          redirect_to [post.topic, post]
+        end
+      end
+
+      def check_mod
+        post = Post.find(params[:id])
+
+        unless current_user == post.user || current_user.admin? || current_user.moderator?
+          flash[:alert] = "This is not your post. You must be the post owner, a moderator, or an admin to do that" #should say something different imho
           redirect_to [post.topic, post]
         end
       end
