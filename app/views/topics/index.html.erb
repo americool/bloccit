@@ -14,9 +14,11 @@
         </div>
       <%end%>
     </div>
-    <div class = "col-md-4">
-      <br> 
-      <%= link_to "New Topic", new_topic_path, class: 'btn btn-success' %>
-      <br> <br>
-    </div>
+    <% if user_is_authorized_for_topics? %>
+      <div class = "col-md-4">
+        <br>
+        <%= link_to "New Topic", new_topic_path, class: 'btn btn-success' %>
+        <br> <br>
+      </div>
+    <%end%>
   </div>
