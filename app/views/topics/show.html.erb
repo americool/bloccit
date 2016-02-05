@@ -12,13 +12,21 @@
     <br />
       <%= @topic.description %>
     </p>
+    <div>
+      <h3>Comments</h3>
+      <%= render @topic.comments %>
+    </div>
+    <% if current_user %>
+      <%=  render 'comments/form', comment: Comment.new, post: @post %>
+    <%end%>
+    </div>
 
     <% @topic.posts.each do |post| %>
       <div class = "media">
         <div class= "media body">
           <h4 class="media-heading">
             <%= link_to post.title, topic_post_path(@topic, post) %>
-            <%= render partial: "labels/list", locals: {labels: post.labels} %> 
+            <%= render partial: "labels/list", locals: {labels: post.labels} %>
           </h4>
 
           <small>
