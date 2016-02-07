@@ -82,7 +82,7 @@ RSpec.describe Post, type: :model do
       it "calls create vote method with new post" do
         post = topic.posts.new(title: RandomData.random_sentence, body: RandomData.random_paragraph, user: user)
         expect(post).to receive(:create_vote)
-        post.save
+        post.save #little confused about this part
       end
 
       it "post belongs to user" do
