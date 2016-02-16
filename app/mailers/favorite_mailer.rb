@@ -5,7 +5,7 @@ class FavoriteMailer < ApplicationMailer
 
     headers["Message-ID"] = "<comments/#{comment.id}@your-app-name.example>"
     headers["In-Reply-To"] = "<post/#{post.id}@your-app-name.example>"
-    headers["References"] = "<post/@{post.id}@your-app-name.eaxmple>"
+    headers["References"] = "<post/#{post.id}@your-app-name.eaxmple>"
 
     @user = user
     @post = post

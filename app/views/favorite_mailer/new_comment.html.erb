@@ -5,7 +5,7 @@
   </head>
 
   <body>
-    <h1> New comment to "<%= @post.tite%>"</h1>
+    <h1> New comment to "<%= @post.title%>"</h1>
     <small>
       By: <%= @comment.user.name %>
     </small>
@@ -13,7 +13,7 @@
       <%= @comment.body %>
     </p>
     <p>
-      <%= link_to "View Comment on site", topic_post_url(@post.topic, anchor: "comment -#{@comment.id}")%>
+      <%= link_to "View Comment on site", topic_post_url(@post.topic, @post, anchor: "comment -#{@comment.id}")%>
     </p>
   </body>
-</html> 
+</html>
