@@ -39,4 +39,4 @@ RSpec.describe Comment, type: :model do
       @another_comment.save
     end
   end
-end 
+end
