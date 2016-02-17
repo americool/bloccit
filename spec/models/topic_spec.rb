@@ -27,20 +27,30 @@ RSpec.describe Topic, type: :model do
    end
  end
 
-describe "scopes" do 
+ describe "scopes" do
    before do
      @public_topic = Topic.create!(name: RandomData.random_sentence, description: RandomData.random_paragraph)
      @private_topic = Topic.create!(name: RandomData.random_sentence, description: RandomData.random_paragraph, public: false)
    end
 
    describe "visible_to(user)" do
-      it "returns all topics if the user is present" do
-        user = User.new
-        expect(Topic.visible_to(user)).to eq(Topic.all)
-      end
+     it "returns all topics if the user is present" do
+       user = User.new
+       expect(Topic.visible_to(user)).to eq(Topic.all)
+     end
 
       it "returns only public topics if user is nil" do
         expect(Topic.visible_to(nil)).to eq([@public_topic])
+      end
+    end
+
+    describe "publicly and privately viewable stuff" do
+      it "publicly_viewable returns all public topics" do
+        expect(Topic.publicly_viewable).to eq([@public_topic])
+      end
+
+      it "returns all private topics with privately_viewable" do
+        expect(Topic.privately_viewable).to eq([@private_topic])
       end
     end
   end
