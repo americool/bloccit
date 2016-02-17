@@ -37,5 +37,31 @@
   <b><%= "#{@user.name} has not submitted any comments yet." %></b>
 <%end%>
 
-<h2> Favorites </h2>
-  <%= render @user.favorites %>
+<h2>Favorited Posts</h2>
+<% if @user.favorites.count != 0 %>
+
+  <% @user.favorites.each do |post| %>
+    <div class="media">
+      <%= @favorites.post.title %>
+        <%= render partial: 'votes/voter', locals: { post: post } %>
+         <% avatar_url = post.user.avatar_url(48) %>
+          <% if avatar_url %>
+           <div class="media-left">
+             <%= image_tag avatar_url, class: 'media-object' %>
+           </div>
+         <% end %>
+         <div class="media-body">
+           <h4 class="media-heading">
+             <%= link_to post.title, topic_post_path(post.topic, post) %>
+             <%= render partial: "labels/list", locals: { labels: post.labels } %>
+           </h4>
+           <small>
+             submitted <%= time_ago_in_words(post.created_at) %> ago by <%= post.user.name %> <br> <br>
+             <%= post.comments.count %> Comments
+           </small>
+         </div>
+       </div>
+  <% end %>
+<% else %>
+<p><%= @user.name %> has not favorited any posts.</p>
+<% end %>

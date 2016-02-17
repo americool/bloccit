@@ -6,7 +6,7 @@ RSpec.describe Label, type: :model do
   let(:post) {create(:post)}
 
   let(:label) {create(:label)}
-  let(:label2) {create(:label)}
+  let(:label2) {create(:label, name: "blah")}
 
 
   it {is_expected.to have_many :labelings}
