@@ -5,6 +5,8 @@ class Comment < ActiveRecord::Base
   validates :body, length: {minimum: 5}, presence: true
   validates :user, presence: true
 
+  default_scope { order('updated_at DESC')}
+
   after_create :send_favorite_emails
 
   private
@@ -13,5 +15,5 @@ class Comment < ActiveRecord::Base
     post.favorites.each do |favorite|
       FavoriteMailer.new_comment(favorite.user, post, self).deliver_now
     end
-  end 
+  end
 end
