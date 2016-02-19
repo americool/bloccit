@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::TopicsController, type: :controller do
   let(:my_user){ create(:user) }
   let(:my_topic) {create(:topic)}
+  let(:my_post) {create(:post, topic: my_topic, user: my_user)}
 
   context "unauthenitcated user" do
     it "GET index returns http success" do
@@ -27,6 +28,11 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
 
     it "DELETE destroy returns http unauthenticated" do
       delete :destroy, id: my_topic.id
+      expect(response).to have_http_status(401)
+    end
+
+    it "POST create returns http unauthenticated" do
+      post :create_post, topic_id: my_topic.id, post: {title: "Post Title", body: RandomData.random_paragraph}
       expect(response).to have_http_status(401)
     end
   end
@@ -58,6 +64,11 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
 
     it "DELETE destroy returns http forbidden" do
       delete :destroy, id: my_topic.id
+      expect(response).to have_http_status(403)
+    end
+
+    it "POST create_post returns http forbidden" do
+      post :create_post, topic_id: my_topic.id, post: {title: "Post Title", body: RandomData.random_paragraph}
       expect(response).to have_http_status(403)
     end
   end
@@ -117,6 +128,24 @@ RSpec.describe Api::V1::TopicsController, type: :controller do
 
       it "deletes my_topic" do
         expect{ Topic.find(my_topic.id)}.to raise_exception(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    describe "POST create_post" do
+      before {post :create_post, id: my_post.id, post: {title: @new_post.title, body: @new_post.body}}
+
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+
+      it "returns json content type" do
+        expect(response.content_type).to eq 'application/json'
+      end
+
+      it "creates a post with the correct attributes" do
+        hashed_json = JSON.parse(response.body)
+        expect(hashed_json["title"]).to eq(@new_post.title)
+        expect(hashed_json["body"]).to eq(@new_post.body)
       end
     end
   end

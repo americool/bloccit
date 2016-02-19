@@ -4,17 +4,12 @@ include RandomData
 RSpec.describe Api::V1::PostsController, type: :controller do
   let(:my_user){ create(:user) }
   let(:my_topic) {create(:topic)}
-  let(:my_post) {create(:post, topic: my_topic, user: my_user}
+  let(:my_post) {create(:post, topic: my_topic, user: my_user)}
 
   context "unauthenitcated user" do
 
     it "PUT update returns http unauthenticated" do
       put :update, topic_id: my_topic.id, id: my_post.id, post: {title: "Post Title", body: RandomData.random_paragraph}
-      expect(response).to have_http_status(401)
-    end
-
-    it "POST create returns http unauthenticated" do
-      post :create, topic_id: my_topic.id, post: {title: "Post Title", body: RandomData.random_paragraph}
       expect(response).to have_http_status(401)
     end
 
@@ -30,14 +25,10 @@ RSpec.describe Api::V1::PostsController, type: :controller do
     end
 
     it "PUT update returns http forbidden" do
-      put :update, topic_id: my_topic.id, id: my_post.id, post: {name: "Post Title", body: RandomData.random_paragraph}
+      put :update, topic_id: my_topic.id, id: my_post.id, post: {title: "Post Title", body: RandomData.random_paragraph}
       expect(response).to have_http_status(403)
     end
 
-    it "POST create returns http forbidden" do
-      post :create, topic_id: my_topic.id, post: {name: "Post Title", body: RandomData.random_paragraph}
-      expect(response).to have_http_status(403)
-    end
 
     it "DELETE destroy returns http forbidden" do
       delete :destroy, topic_id: my_topic.id, id: my_post.id
@@ -53,7 +44,7 @@ RSpec.describe Api::V1::PostsController, type: :controller do
     end
 
     describe "PUT update" do
-      before { put :update, topic_id: my_topic.id, id: my_post.id, post: {title: @new_post.title, body: @new_post.body}}
+      before { put :update, id: my_post.id, post: {title: @new_post.title, body: @new_post.body}}
 
       it "returns http success" do
         expect(response).to have_http_status(:success)
@@ -69,23 +60,6 @@ RSpec.describe Api::V1::PostsController, type: :controller do
       end
     end
 
-    describe "POST create" do
-      before {post :create, post: {title: @new_post.name, body: @new_post.body}}
-
-      it "returns http success" do
-        expect(response).to have_http_status(:success)
-      end
-
-      it "returns json content type" do
-        expect(response.content_type).to eq 'application/json'
-      end
-
-      it "creates a post with the correct attributes" do
-        hashed_json = JSON.parse(response.body)
-        expect(hashed_json["title"]).to eq(@new_post.title)
-        expect(hashed_json["body"]).to eq(@new_post.body)
-      end
-    end
 
     describe "DELETE destroy" do
       before {delete :destroy, id: my_post.id}
