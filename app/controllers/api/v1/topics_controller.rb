@@ -34,7 +34,9 @@ class Api::V1::TopicsController < Api::V1::BaseController
   end
 
   def create_post
-    post = Post.new(post_params)
+    topic = Topic.find(params[:topic_id])
+    post = topic.posts.build(post_params)
+    post.user = @current_user
     if post.valid?
       post.save!
       render json: post.to_json, status: 201
@@ -57,5 +59,9 @@ class Api::V1::TopicsController < Api::V1::BaseController
   private
   def topic_params
     params.require(:topic).permit(:name, :description, :public)
+  end
+  
+  def post_params
+    params.require(:post).permit(:title, :body)
   end
 end
